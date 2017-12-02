@@ -1,0 +1,10 @@
+{
+  "name": "DinkBot",
+  "version": "1.0.0",
+  "description": "HackDay project 2017",
+  "main": "bot.js",
+  "author": "DinkieShy",
+  "dependencies": {
+    "discord.js": "^11.2.1"
+  }
+}

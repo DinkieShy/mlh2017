@@ -1,14 +1,7 @@
 var Discord = require('discord.io');
 var logger = require('winston');
 var auth = require('./auth.json');
-var execFile = require('child_process').execFile;
-var fs = require('fs');
 var re = /([0-9]+)d([0-9]+)\+?([0-9]*)/;
-var cmd = require('node-cmd');
-var result = '';
-var script;
-
-
 
 logger.remove(logger.transports.Console);
 logger.add(logger.transports.Console, {colorize: true});
@@ -36,16 +29,10 @@ bot.on('message', function(user, userID, channelID, message, e){
                     message: 'Pong!'
                 });
             break;
-			case 'pong':
-				bot.sendMessage({
-					to: channelID,
-					message: 'Ping!'
-				});
-			break;
 			case 'roll':
 				var roll = re.exec(message.slice(6, message.length));
 				if (roll != null){
-					var toSend = user + " rolled: " + rollDie(parseInt(roll[1]), parseInt(roll[2]), roll[3]);
+					var toSend = rollDie(parseInt(roll[1]), parseInt(roll[2]), roll[3]);
 					bot.sendMessage({
 						to:channelID,
 						message: toSend.toString()
@@ -61,7 +48,7 @@ bot.on('message', function(user, userID, channelID, message, e){
 			case 'r':
 				var roll = re.exec(message.slice(3, message.length));
 				if (roll != null){
-					var toSend = user + " rolled: " + rollDie(parseInt(roll[1]), parseInt(roll[2]), roll[3]);
+					var toSend = rollDie(parseInt(roll[1]), parseInt(roll[2]), roll[3]);
 					bot.sendMessage({
 						to:channelID,
 						message: toSend.toString()
@@ -74,11 +61,29 @@ bot.on('message', function(user, userID, channelID, message, e){
 					})
 				}
 			break;
+<<<<<<< HEAD
 			case 'DinkbotHelp':
 				bot.sendMessage({
 					to:channelID,
 					message: "Commands:\n!DinkbotHelp - display this menu\n!bf [insert brainfuck here]  interprets brainfuck! Try converting a string here: https://copy.sh/brainfuck/text.html !\n!roll xdy or !r xdy - roll x amount of y sided die\n!Ping - Pong!\n!Pong - Ping!"
 				})
+=======
+			case 'rollp':
+				var roll = re.exec(message.slice(7, message.length));
+				if (roll != null){
+					var toSend = rollDie(parseInt(roll[1]), parseInt(roll[2]), roll[3]);
+					bot.sendMessage({
+						to:userID,
+						message: toSend.toString()
+					});
+				}
+				else{
+					bot.sendMessage({
+						to:channelID,
+						message: 'Invalid formula!'
+					})
+				}
+>>>>>>> parent of 14d9f35... brainfuck
 			break;
 			case 'echo':
 				message = message.slice(6, message.length);
@@ -87,38 +92,9 @@ bot.on('message', function(user, userID, channelID, message, e){
 					message: message
 				})
 			break;
-			case 'bf':
-				result = '';
-				code = message.slice(4, message.length);
-				logger.info('code: ' + code);
-				var script = execFile(__dirname  + '/scripts/BFInterpreter.exe', [code]);
-				script.stdout.on('data', function(data, err){
-					if(err){
-						logger.info('data in err: ' + err);
-					}
-					if(data != undefined){
-						result += data.toString();
-						logger.info(('result so far: ' + result));
-						logger.info(('data in: ' + data));
-					}
-				});
-				script.on('close', function(err){
-					if(err){
-						logger.info(('data out err: ' + err));
-					}
-					logger.info(('result: ' + typeof result + " " + result));
-					logger.info('ready to output');
-					bot.sendMessage({
-						to: channelID,
-						message: result
-					});
-				});
-			break;
          }
      }
 });
-
-
 
 function rollDie(numberOfDice, numberOfSides, modifier){
 	var toSend = 0;

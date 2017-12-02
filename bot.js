@@ -74,10 +74,10 @@ bot.on('message', function(user, userID, channelID, message, e){
 					})
 				}
 			break;
-			case 'help':
+			case 'DinkbotHelp':
 				bot.sendMessage({
 					to:channelID,
-					message: "Commands:\n!help - display this menu\n!roll xdy or !r xdy - roll x amount of y sided die\n!Ping - Pong!\n!Pong - Ping!"
+					message: "Commands:\n!DinkbotHelp - display this menu\n!bf [insert brainfuck here]  interprets brainfuck! Try converting a string here: https://copy.sh/brainfuck/text.html !\n!roll xdy or !r xdy - roll x amount of y sided die\n!Ping - Pong!\n!Pong - Ping!"
 				})
 			break;
 			case 'echo':
